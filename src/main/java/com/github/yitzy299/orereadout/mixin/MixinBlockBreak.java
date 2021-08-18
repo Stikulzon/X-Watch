@@ -32,7 +32,7 @@ public class MixinBlockBreak {
         text.append(action.getBlock().getName());
         text.append(" broke ");
         text.append(" at ");
-        var posMsg = new LiteralText(pos.getX() + " " + pos.getY() + " " + pos.getZ()).styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp @s " + pos.getX() + " " + pos.getY() + " " + pos.getZ() + " " + player.getEntityWorld().getRegistryKey().getValue())));
+        var posMsg = new LiteralText(pos.getX() + " " + pos.getY() + " " + pos.getZ()).styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/execute in " + player.getEntityWorld().getRegistryKey().getValue() + " run tp @s " + pos.getX() + " " + pos.getY() + " " + pos.getZ())));
         text.append(posMsg);
         if (action.isConsole()) {
             OreReadout.LOG.info(joined);
