@@ -26,13 +26,14 @@ public class MixinBlockBreak {
         OreReadout.CONFIG.actions.stream().filter(a -> a.getBlock().equals(block)).forEach(action -> display(action, pos, player));
     }
     private void display(Action action, BlockPos pos, PlayerEntity player) {
-        var log = "[ore-readout] " + player.getName().asString() + " broke " + action.getBlock() + " at " + pos.getX() + " " + pos.getY()+ " " + pos.getZ();
+        var log = player.getName().asString() + " broke " + action.getBlock() + " at " + pos.getX() + " " + pos.getY()+ " " + pos.getZ();
         var text = player.getName().shallowCopy();
         text.append(" broke ");
         text.append(action.getBlock().getName());
-        text.append(" at ");
+        text.append(" at [ ");
         var posMsg = new LiteralText(pos.getX() + " " + pos.getY() + " " + pos.getZ()).styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/execute in " + player.getEntityWorld().getRegistryKey().getValue() + " run tp @s " + pos.getX() + " " + pos.getY() + " " + pos.getZ())));
         text.append(posMsg);
+        text.append(" ]");
         text.setStyle(Style.EMPTY.withColor(Formatting.YELLOW));
 
         if (action.isConsole()) {
