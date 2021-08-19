@@ -7,8 +7,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.text.Style;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,16 +26,17 @@ public class MixinBlockBreak {
         OreReadout.CONFIG.actions.stream().filter(a -> a.getBlock().equals(block)).forEach(action -> display(action, pos, player));
     }
     private void display(Action action, BlockPos pos, PlayerEntity player) {
-        var joined = String.join(" ", player.getName().asString() + "broke" + action.getBlock().getName().asString() + "at" + pos.getX() + pos.getY() + pos.getZ());
+        var log = "[ore-readout] " + player.getName().asString() + " broke " + action.getBlock() + " at " + pos.getX() + " " + pos.getY()+ " " + pos.getZ();
         var text = player.getName().shallowCopy();
-        text.append(" ");
-        text.append(action.getBlock().getName());
         text.append(" broke ");
+        text.append(action.getBlock().getName());
         text.append(" at ");
         var posMsg = new LiteralText(pos.getX() + " " + pos.getY() + " " + pos.getZ()).styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/execute in " + player.getEntityWorld().getRegistryKey().getValue() + " run tp @s " + pos.getX() + " " + pos.getY() + " " + pos.getZ())));
         text.append(posMsg);
+        text.setStyle(Style.EMPTY.withColor(Formatting.YELLOW));
+
         if (action.isConsole()) {
-            OreReadout.LOG.info(joined);
+            OreReadout.LOG.info(log);
         }
         if (action.isOpChat()) {
             Objects.requireNonNull(player.getServer()).getPlayerManager().getPlayerList().stream().filter(p -> p.hasPermissionLevel(3)).forEach(p -> p.sendMessage(text, false));
