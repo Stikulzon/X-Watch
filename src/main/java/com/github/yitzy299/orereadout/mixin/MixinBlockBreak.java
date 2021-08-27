@@ -26,7 +26,7 @@ public class MixinBlockBreak {
         OreReadout.CONFIG.actions.stream().filter(a -> a.getBlock().equals(block)).forEach(action -> display(action, pos, player));
     }
     private void display(Action action, BlockPos pos, PlayerEntity player) {
-        var log = player.getName().asString() + " broke " + action.getBlock() + " at " + pos.getX() + " " + pos.getY()+ " " + pos.getZ();
+        var log = player.getName().asString() + " broke " + action.getBlock().getName().getString() + " at " + pos.getX() + " " + pos.getY()+ " " + pos.getZ();
         var text = player.getName().shallowCopy();
         text.append(" broke ");
         text.append(action.getBlock().getName());
