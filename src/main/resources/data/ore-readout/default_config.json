@@ -1,8 +1,0 @@
-[
-  {
-    "block": "minecraft:diamond_ore",
-    "op_chat": true,
-    "log": true,
-    "public_chat": false
-  }
-]
